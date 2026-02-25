@@ -8,7 +8,7 @@ export default function Home() {
         <p className="mt-4 text-lg">저는 첫번째 페이지를 만들었습니다.</p>
         <Image
           src="/dog.png"
-          alt="책 이미지"
+          alt="강아지 이미지"
           width={200}
           height={200}
           className="mt-6 text-center mx-auto rounded-lg shadow-lg 
