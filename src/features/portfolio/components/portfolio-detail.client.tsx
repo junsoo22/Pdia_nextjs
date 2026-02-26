@@ -3,6 +3,11 @@
 
 import { useParams, usePathname } from "next/navigation";
 
+//파라미터를 전달받는 방법
+//src/app/portfolio/[portfolioId]/page.tsx -->/portfolio/:portfolioId
+//1. page.tsx에서 인자로 전달받기 params: Promise<{portfolioId:string}>
+//2. useParams Hook 사용하기 (Client Component만 가능)
+
 export default function PortfolioDetailClient({
   portfolioId,
 }: {
