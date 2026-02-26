@@ -1,18 +1,29 @@
+"use client";
+
 import { List } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export default async function BlogSSR() {
-  type Item = {
-    id: number;
-    title: string;
-  };
+type Item = {
+  id: number;
+  title: string;
+};
 
-  const res = await fetch(
-    "https://shinhan-pda-react-router-full-examp.vercel.app/api/posts",
-  );
+interface BlogClientProps {
+  initialPosts: Item[];
+}
 
-  const data = await res.json();
-  const postList: Item[] = data.data.items;
+export default function BlogClient({ initialPosts }: BlogClientProps) {
+  const url =
+    "https://shinhan-pda-react-router-full-examp.vercel.app/api/posts";
+
+  const [postList, setPostList] = useState<Item[]>(initialPosts);
+
+  useEffect(() => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setPostList(data.data.items));
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
@@ -21,7 +32,7 @@ export default async function BlogSSR() {
         <div className="mb-6 flex items-center gap-2">
           <List className="h-6 w-6 text-indigo-600" />
           <h1 className="text-2xl font-bold tracking-tight text-gray-800">
-            게시글 목록-SSR
+            게시글 목록
           </h1>
         </div>
 
@@ -33,7 +44,7 @@ export default async function BlogSSR() {
               className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
             >
               <div className="mb-2 text-xs text-gray-400">Post #{item.id}</div>
-              <Link href={`/blog-ssr/${item.id}`}>
+              <Link href={`/blog/${item.id}`}>
                 <h2 className="line-clamp-2 text-lg font-semibold text-gray-800 group-hover:text-indigo-600">
                   {item.title}
                 </h2>
