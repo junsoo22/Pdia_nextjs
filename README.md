@@ -37,8 +37,22 @@ Next.js는 기본적으로 RSC(서버 컴포넌트)!!
   - 이때 params는 Promise 객체이기 때문에 await로 사용해주어야 한다.
 
 - Client Component
+
   ```
   import {useParams} from "next/navigation";
   ```
 
   - useParams라는 hook을 사용한다.
+
+### 3. 서버
+
+웹: 약속
+요청을 보내면 응답이 온다.
+
+- 클라이언트: 요청을 보내는 쪽
+- 서버: 요청을 받아서 응답을 보내는 쪽
+
+- input을 받아서 outputㅡㅇㄹ 만들어 주는 것: 함수
+- 웹 서버: 함수(request를 받아서 repsonse를 만들어 주는 함수)
+  - Request Method(GET, POST, UPDATE, DELETE, PUT, PATCH, OPTIONS)
+  - Response StatusCode(2XX, 3XX, 4XX, 5XX).
