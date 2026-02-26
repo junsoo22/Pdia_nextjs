@@ -1,6 +1,4 @@
-import { List } from "lucide-react";
-import Link from "next/link";
-import BlogClient from "./blog.client";
+import BlogClient from "./blog-list.client";
 
 export default async function Blog() {
   type Item = {

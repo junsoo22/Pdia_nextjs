@@ -1,14 +1,10 @@
-import Blog from "@/features/blog/components/blog";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import Blog from "@/features/blog/components/blog-list";
 
 export default function BlogPage() {
   return (
     <div>
-      <QueryClientProvider client={queryClient}>
-        <Blog></Blog>
-      </QueryClientProvider>
+      {/* <Blog></Blog> */}
+      <Blog />
     </div>
   );
 }
