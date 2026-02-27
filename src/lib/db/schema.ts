@@ -103,3 +103,14 @@ export const postCommentsTable = appSchema.table("post_comments", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
+
+export const blogsTable = appSchema.table("blogs", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 200 }).notNull(),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});

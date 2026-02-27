@@ -29,6 +29,13 @@
       "when": 1772165688314,
       "tag": "0003_milky_colossus",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1772167531376,
+      "tag": "0004_curious_pride",
+      "breakpoints": true
     }
   ]
 }
