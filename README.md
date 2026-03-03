@@ -44,7 +44,7 @@ Next.js는 기본적으로 RSC(서버 컴포넌트)!!
 
   - useParams라는 hook을 사용한다.
 
-### 3. 서버
+### 서버
 
 웹: 약속
 요청을 보내면 응답이 온다.
@@ -52,12 +52,12 @@ Next.js는 기본적으로 RSC(서버 컴포넌트)!!
 - 클라이언트: 요청을 보내는 쪽
 - 서버: 요청을 받아서 응답을 보내는 쪽
 
-- input을 받아서 outputㅡㅇㄹ 만들어 주는 것: 함수
+- input을 받아서 output을 만들어 주는 것: 함수
 - 웹 서버: 함수(request를 받아서 repsonse를 만들어 주는 함수)
   - Request Method(GET, POST, UPDATE, DELETE, PUT, PATCH, OPTIONS)
   - Response StatusCode(2XX, 3XX, 4XX, 5XX).
 
-### 4. zod 적용하여 validation check하기
+### zod 적용하여 validation check하기
 
 - Zod: 런타임 스키마 검증 + TypeScript 타입 추론을 동시에 해주는 라이브러리
 - `safeParse()`: 예외를 던지지 않고 `{ success, data/error }` 형태로 반환
@@ -72,126 +72,31 @@ export const createBlogSchema = z.object({
 export type createBlogSchema = z.infer<typeof createBlogSchema>;
 ```
 
+## 3. blog를 저장할 수 있는 blogsTable 생성
+
+## 4. blog을 저장할 수 있는 blogsCommentsTable 생성
+
+## 5. blogs에 대한 API Route 만들기
+
+- /api/blogs (GET): searchParameter로 page 받아서 리턴. 1페이지당 10개 게시글 조회해서 줌
+- /api/blogs/:blogId (GET): 게시글 상세조회(게시글 한 개 상세 조회)
+- /api/blogs/:blogId (PATCH): 게시글 수정하기
+- /api/blogs/:blogId (DELETE): 게시글 삭제하기
+
+## 6. blogs/:blogId/comments에 대한 API Route 만들기
+
+- /api/:blogId/comments (GET): 댓글 조회(모두 조회)
+- /api/blogs/:blogId/comments (POST): 댓글 등록
+- /api/blog-comments/:commentId (PATCH): 댓글 수정
+- /api/blog-comments/:commentId (DELETE): 댓글 삭제
+
 ---
 
-## 프로젝트 구조
+# JWT(Json Web Token)
 
-```
-src/
-├── app/                            # 페이지, 레이아웃, API 라우트
-│   ├── (main)/                     # 공개 페이지 라우트 그룹
-│   │   ├── page.tsx                # 홈 페이지
-│   │   ├── layout.tsx              # 메인 레이아웃
-│   │   ├── blog/                   # 블로그 (CSR + SSR 혼합)
-│   │   │   ├── page.tsx
-│   │   │   └── [blogId]/page.tsx
-│   │   ├── blog-ssr/               # 블로그 (순수 SSR)
-│   │   │   ├── page.tsx
-│   │   │   └── [blogId]/page.tsx
-│   │   ├── portfolio/              # 포트폴리오
-│   │   │   └── page.tsx
-│   │   └── posts/                  # 게시글
-│   │       ├── page.tsx
-│   │       └── [postId]/page.tsx
-│   ├── api/                        # API 라우트
-│   │   ├── blogs/route.ts          # POST: 블로그 생성
-│   │   ├── db-prac/route.ts        # Drizzle ORM 연습
-│   │   ├── ping/route.tsx          # GET/POST 테스트
-│   │   └── ping/[pingId]/route.tsx # 동적 라우트 테스트
-│   └── admin/                      # 관리자 (예정)
-│
-├── features/                       # 기능별 모듈 (Server/Client 분리 패턴)
-│   ├── blog/components/blog-list/
-│   │   ├── blog-list.tsx           # Server Component
-│   │   └── blog-list.client.tsx    # Client Component
-│   ├── portfolio/components/
-│   │   ├── portfolio.tsx / portfolio.client.tsx
-│   │   └── portfolio-detail.tsx / portfolio-detail.client.tsx
-│   └── posts/components/
-│       ├── post-detail.tsx
-│       └── post-detail.client.tsx
-│
-├── components/
-│   ├── ui/                         # shadcn/ui (56개 컴포넌트)
-│   ├── common/logo.tsx             # 앱 로고
-│   └── layouts/                    # 헤더, 네비게이션
-│       ├── app-header.tsx
-│       └── partials/nav/
-│           ├── desktop-nav.tsx
-│           └── mobile-nav.tsx
-│
-├── lib/
-│   ├── db/
-│   │   ├── client.ts               # Drizzle ORM 클라이언트 (커넥션 풀링)
-│   │   └── schema.ts               # DB 스키마 (6개 테이블)
-│   ├── http/response.ts            # 표준 API 응답 헬퍼
-│   ├── validators/blogs.ts         # Zod 유효성 검증 스키마
-│   └── utils.ts                    # cn() 유틸리티
-│
-└── hooks/use-mobile.ts             # 모바일 감지 훅
-```
+H.P.S(Header, Payload, Signature)
 
-## 데이터베이스 스키마
-
-Drizzle ORM + Supabase PostgreSQL. 스키마 네임스페이스: `my-next-app-schema`
-
-| 테이블          | 용도          | 주요 필드                                             |
-| --------------- | ------------- | ----------------------------------------------------- |
-| `sample_table`  | 참고용 예시   | id(uuid), title, username(unique), content, age       |
-| `users`         | 사용자        | id(uuid), email(unique), passwordHash, nickname, role |
-| `posts`         | 게시글        | id(serial), authorId(FK→users), title, content        |
-| `post_likes`    | 좋아요        | userId + postId (복합 PK)                             |
-| `post_comments` | 댓글 (대댓글) | id(serial), postId(FK), parentId(자기참조), depth     |
-| `blogs`         | 블로그        | id(serial), title, content                            |
-
-주요 특징:
-
-- UUID 기본값 (v4 랜덤 생성)
-- Cascade 삭제 제약조건
-- Check 제약조건 (예: age > 20)
-- 자주 조회하는 컬럼에 인덱스 설정
-- `.$onUpdate()`로 updatedAt 자동 갱신
-
-## API 엔드포인트
-
-| 메서드   | 경로                 | 설명                                                 |
-| -------- | -------------------- | ---------------------------------------------------- |
-| POST     | `/api/blogs`         | 블로그 생성 (Zod 검증 → DB INSERT → 201 반환)        |
-| GET      | `/api/db-prac`       | Drizzle ORM 연습 (SELECT, WHERE, JOIN, OFFSET/LIMIT) |
-| GET/POST | `/api/ping`          | 테스트용 ping/pong                                   |
-| GET      | `/api/ping/[pingId]` | 동적 라우트 테스트                                   |
-
-API 응답 규칙 (`src/lib/http/response.ts`):
-
-```typescript
-response.ok(data); // { success: true, data }
-response.fail(message, status, details); // { success: false, error: { message, details } }
-```
-
-## Server/Client 컴포넌트 분리 패턴
-
-파일 명명 규칙으로 서버/클라이언트 컴포넌트를 구분:
-
-- `component.tsx` — Server Component (기본, 지시어 없음)
-- `component.client.tsx` — Client Component (`"use client"` 지시어 포함)
-
-```
-Server Component (데이터 fetch)
-  └→ Client Component (상태 관리, 이벤트 핸들링)
-```
-
-## 기술 스택
-
-| 분류          | 기술                             |
-| ------------- | -------------------------------- |
-| 프레임워크    | Next.js 16 (App Router)          |
-| 런타임        | React 19 (React Compiler 활성화) |
-| 언어          | TypeScript                       |
-| 스타일링      | Tailwind CSS v4                  |
-| UI 컴포넌트   | shadcn/ui (56개)                 |
-| ORM           | Drizzle ORM                      |
-| DB            | PostgreSQL (Supabase)            |
-| 폼 검증       | React Hook Form + Zod            |
-| 데이터 페칭   | TanStack React Query             |
-| 아이콘        | Lucide React                     |
-| 패키지 매니저 | pnpm                             |
+- Signature: (H.P.jwt를 발급하는 주체인 server의 자체 secret key)를 해싱한 값
+- 검증하려면 (H.P.Secret key)를 똑같이 해싱함. 그 결과인 signature 뽑을 수 있음.
+- 토큰으로 들어온 signature와 방금 만든 signature가 동일하면 검증 성공. 인증 완료
+- Stateless. 상태 저장X. -> 만료 맘대로 못시킴. 발급하면 끝.
