@@ -7,13 +7,6 @@ interface RouteContext {
   params: Promise<{ blogId: string }>;
 }
 
-export async function GET(request: NextRequest, context: RouteContext) {
-  //   const { blogId } = await context.params;
-  const comments = await db.select().from(blogCommentsTable);
-  console.log(comments);
-  return response.ok(comments);
-}
-
 export async function POST(request: NextRequest, context: RouteContext) {
   const { blogId } = await context.params;
   const data = await request.json();
