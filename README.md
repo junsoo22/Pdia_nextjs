@@ -135,16 +135,17 @@ src/
 
 Drizzle ORM + Supabase PostgreSQL. 스키마 네임스페이스: `my-next-app-schema`
 
-| 테이블 | 용도 | 주요 필드 |
-|--------|------|-----------|
-| `sample_table` | 참고용 예시 | id(uuid), title, username(unique), content, age |
-| `users` | 사용자 | id(uuid), email(unique), passwordHash, nickname, role |
-| `posts` | 게시글 | id(serial), authorId(FK→users), title, content |
-| `post_likes` | 좋아요 | userId + postId (복합 PK) |
-| `post_comments` | 댓글 (대댓글) | id(serial), postId(FK), parentId(자기참조), depth |
-| `blogs` | 블로그 | id(serial), title, content |
+| 테이블          | 용도          | 주요 필드                                             |
+| --------------- | ------------- | ----------------------------------------------------- |
+| `sample_table`  | 참고용 예시   | id(uuid), title, username(unique), content, age       |
+| `users`         | 사용자        | id(uuid), email(unique), passwordHash, nickname, role |
+| `posts`         | 게시글        | id(serial), authorId(FK→users), title, content        |
+| `post_likes`    | 좋아요        | userId + postId (복합 PK)                             |
+| `post_comments` | 댓글 (대댓글) | id(serial), postId(FK), parentId(자기참조), depth     |
+| `blogs`         | 블로그        | id(serial), title, content                            |
 
 주요 특징:
+
 - UUID 기본값 (v4 랜덤 생성)
 - Cascade 삭제 제약조건
 - Check 제약조건 (예: age > 20)
@@ -153,18 +154,18 @@ Drizzle ORM + Supabase PostgreSQL. 스키마 네임스페이스: `my-next-app-sc
 
 ## API 엔드포인트
 
-| 메서드 | 경로 | 설명 |
-|--------|------|------|
-| POST | `/api/blogs` | 블로그 생성 (Zod 검증 → DB INSERT → 201 반환) |
-| GET | `/api/db-prac` | Drizzle ORM 연습 (SELECT, WHERE, JOIN, OFFSET/LIMIT) |
-| GET/POST | `/api/ping` | 테스트용 ping/pong |
-| GET | `/api/ping/[pingId]` | 동적 라우트 테스트 |
+| 메서드   | 경로                 | 설명                                                 |
+| -------- | -------------------- | ---------------------------------------------------- |
+| POST     | `/api/blogs`         | 블로그 생성 (Zod 검증 → DB INSERT → 201 반환)        |
+| GET      | `/api/db-prac`       | Drizzle ORM 연습 (SELECT, WHERE, JOIN, OFFSET/LIMIT) |
+| GET/POST | `/api/ping`          | 테스트용 ping/pong                                   |
+| GET      | `/api/ping/[pingId]` | 동적 라우트 테스트                                   |
 
 API 응답 규칙 (`src/lib/http/response.ts`):
 
 ```typescript
-response.ok(data)                     // { success: true, data }
-response.fail(message, status, details) // { success: false, error: { message, details } }
+response.ok(data); // { success: true, data }
+response.fail(message, status, details); // { success: false, error: { message, details } }
 ```
 
 ## Server/Client 컴포넌트 분리 패턴
@@ -181,16 +182,16 @@ Server Component (데이터 fetch)
 
 ## 기술 스택
 
-| 분류 | 기술 |
-|------|------|
-| 프레임워크 | Next.js 16 (App Router) |
-| 런타임 | React 19 (React Compiler 활성화) |
-| 언어 | TypeScript |
-| 스타일링 | Tailwind CSS v4 |
-| UI 컴포넌트 | shadcn/ui (56개) |
-| ORM | Drizzle ORM |
-| DB | PostgreSQL (Supabase) |
-| 폼 검증 | React Hook Form + Zod |
-| 데이터 페칭 | TanStack React Query |
-| 아이콘 | Lucide React |
-| 패키지 매니저 | pnpm |
+| 분류          | 기술                             |
+| ------------- | -------------------------------- |
+| 프레임워크    | Next.js 16 (App Router)          |
+| 런타임        | React 19 (React Compiler 활성화) |
+| 언어          | TypeScript                       |
+| 스타일링      | Tailwind CSS v4                  |
+| UI 컴포넌트   | shadcn/ui (56개)                 |
+| ORM           | Drizzle ORM                      |
+| DB            | PostgreSQL (Supabase)            |
+| 폼 검증       | React Hook Form + Zod            |
+| 데이터 페칭   | TanStack React Query             |
+| 아이콘        | Lucide React                     |
+| 패키지 매니저 | pnpm                             |

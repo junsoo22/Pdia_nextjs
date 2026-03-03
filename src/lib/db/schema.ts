@@ -114,3 +114,22 @@ export const blogsTable = appSchema.table("blogs", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
+
+export const blogCommentsTable = appSchema.table("blog_comments", {
+  id: serial("id").primaryKey(),
+  blogId: integer("blog_id").references(() => blogsTable.id, {
+    onDelete: "set null",
+  }),
+  // parentId: integer("parent_id").references(
+  //   (): AnyPgColumn => blogCommentsTable.id,
+  //   { onDelete: "set null" },
+  // ),
+  content: text("content").notNull(),
+  // depth: integer("depth").notNull(),
+  // isDeleted: boolean("is_deleted").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});

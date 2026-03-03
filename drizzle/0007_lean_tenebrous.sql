@@ -1,0 +1,1 @@
+ALTER TABLE "my-next-app-schema"."blog_comments" ADD COLUMN "content" text NOT NULL;
